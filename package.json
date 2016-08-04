@@ -34,8 +34,6 @@
     "mocha": "^3.0.0",
     "nodemon": "^1.10.0",
     "rd3": "^0.7.0",
-    "jshint": "^2.9.2",
-    "jshint-loader": "^0.8.3",
     "react": "^15.2.1",
     "react-addons-test-utils": "^15.3.0",
     "react-dom": "^15.3.0",
