@@ -17,7 +17,7 @@ let getIndeed = (query, city, userIP) => {
    * Callback function returns an object
    * one object holding the data (data)
    * and the other object (respond)
-   * invoke a server respond object
+   * invoke a server respond object.
   */
   return (res) => {
     return new Promise((resolve, reject) => {
@@ -36,7 +36,7 @@ let getIndeed = (query, city, userIP) => {
             });
           }
         });
-    })
+    });
   }
 };
 

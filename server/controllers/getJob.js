@@ -11,15 +11,14 @@ exports.post = (req, res) => {
   // redis.del(key);
 
   /*
-  ** Check if redis has a sesson stored
-  ** return data if session exist.
+   * Return data from cache if exists
   */
   redis.get(key, (err, result) => {
 
     res.setHeader('Content-Type', 'application/json');
 
     if (result) {
-      // console.log('return from redis');
+      console.log('return from redis');
       res.send(JSON.parse(result));
       res.end();
     } else {
@@ -38,7 +37,7 @@ exports.post = (req, res) => {
        * @return response JSON || response from cache
       */
       getIndeed(jobTitle, city, ip)(res)
-        // promise
+        // Return data when a promise is return.
         .then((res) => {
           // Cache data using request body as key
           redis.set(key, res.data);
