@@ -1,21 +1,25 @@
 const request = require('request');
 const getIndeed = require('../models/jobs');
-
 const redisClient = require('redis').createClient;
 const redis = redisClient(6379, 'localhost');
 
 exports.post = (req, res) => {
   let jobTitle = req.body.jobTitle,
       city = req.body.city;
-
   let key = JSON.stringify(req.body);
 
-  redis.del(key);
+  // redis.del(key);
 
+  /*
+  ** Check if redis has a sesson stored
+  ** return data if session exist.
+  */
   redis.get(key, (err, result) => {
+
     res.setHeader('Content-Type', 'application/json');
+
     if (result) {
-      console.log('return from redis');
+      // console.log('return from redis');
       res.send(JSON.parse(result));
       res.end();
     } else {
@@ -23,15 +27,29 @@ exports.post = (req, res) => {
             || req.connection.remoteAddress
             || req.socket.remoteAddress
             || req.connection.socket.remoteAddress;
-      console.log('make api call');
-      getIndeed(jobTitle, city, ip)(res).then((res) => {
-        redis.set(key, res.data);
-        res.parse;
-        res.end();
-      }, (err) => {
-        console.log('err: ', err);
-        res.end();
-      });
+      
+      // console.log('make api call');
+
+      /*
+       * Search Indeed API and cache data
+       * @param {string} jobTitle 
+       * @param {string} city
+       * @param {string} ip
+       * @return response JSON || response from cache
+      */
+      getIndeed(jobTitle, city, ip)(res)
+        // promise
+        .then((res) => {
+          // Cache data using request body as key
+          redis.set(key, res.data);
+          // Set cache to expire in an hour
+          redis.expire(key, 3600);
+          res.respond;
+          res.end();
+        }, (err) => {
+          console.log('err: ', err);
+          res.end();
+        });
     }
   });
 }
