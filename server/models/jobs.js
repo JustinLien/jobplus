@@ -21,11 +21,7 @@ let getIndeed = (query, city, userIP) => {
   */
   return (res) => {
     return new Promise((resolve, reject) => {
-      request('http://api.indeed.com/ads/apisearch?format=json&publisher=' + 
-        process.env.INDEED + '&q=' + 
-        query + '&l=' + 
-        city + '&radius=.5&st=jobsite&jt=fulltime&limit=15&filter=1&latlong=1&co=us&userip=' +
-        userIP + '&v=2', 
+      request(`http://api.indeed.com/ads/apisearch?format=json&publisher=${process.env.INDEED}&q=${query}&l=${city}&radius=.5&st=jobsite&jt=fulltime&limit=15&filter=1&latlong=1&co=us&userip=${userIP}&v=2`,
         (error, response, data) => {
           if (error) {
             reject(error);
